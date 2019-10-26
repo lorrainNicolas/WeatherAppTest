@@ -69,17 +69,12 @@ private extension WeatherHomeViewController {
     }
     
     func bindView() {
-        viewModel.cellViewModels.bind { [weak self] _ in
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
+        viewModel.cellViewModels.dispatchOnMainThread().bind { [weak self] _ in
+            self?.tableView.reloadData()
         }
            
-        viewModel.isLoading.bind{ [weak self] isLoading in
-            DispatchQueue.main.async { [weak self] in
-                isLoading ? self?.indicatorView.startAnimating() : self?.indicatorView.stopAnimating()
-            }
-               
+        viewModel.isLoading.dispatchOnMainThread().bind{ [weak self] in
+            $0 ? self?.indicatorView.startAnimating() : self?.indicatorView.stopAnimating()
         }
     }
 }

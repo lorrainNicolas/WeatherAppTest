@@ -12,6 +12,7 @@ class Observable<T> {
     typealias Listener = (T) -> Void
     
     private var listener: Listener?  = nil
+    private var hasToBeOnMainThread = false
     
     init(_ value: T) {
         self.value = value
@@ -31,10 +32,21 @@ class Observable<T> {
         self.listener = listener
         callBack()
     }
+    
+    func dispatchOnMainThread() -> Observable{
+        hasToBeOnMainThread = true
+        return self
+    }
 }
 
 private extension Observable {
     func callBack() {
-        listener?(value)
+        if hasToBeOnMainThread && !Thread.isMainThread  {
+            DispatchQueue.main.async { [weak self] in
+                self.flatMap { $0.listener?( $0.value) }
+            }
+        } else {
+            listener?(value)
+        }
     }
 }
