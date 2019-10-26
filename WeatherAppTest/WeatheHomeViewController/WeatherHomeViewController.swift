@@ -10,23 +10,28 @@ import UIKit
 
 class WeatherHomeViewController: UIViewController {
     private lazy var tableView = createTableView()
+    private lazy var indicatorView = createIndicatorView()
+    
+    private let controller: WeatherHomeHandler = WeatherHomeController()
+    private var viewModel: WeatherHomeViewModel {
+        return controller.viewModel
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         buildViewHierarchy()
         setConstraints()
         registerCell()
-        WeatherAPI.getWeather() {
-            print($0)
-        }
-        // Do any additional setup after loading the view.
+        bindView()
+        
+        controller.launch()
     }
 }
 
 // MARK: -  UITableViewDataSource
 extension WeatherHomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return viewModel.numberOfRow
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -35,7 +40,7 @@ extension WeatherHomeViewController: UITableViewDataSource {
             return WeatherHomeCell()
         }
         
-        cell.update(vm: WeatherHomeCellViewModel(title: "truc"))
+        cell.update(vm: viewModel.cellViewModels.value[indexPath.row])
         return cell
     }
 }
@@ -44,6 +49,7 @@ extension WeatherHomeViewController: UITableViewDataSource {
 private extension WeatherHomeViewController {
     func buildViewHierarchy() {
         view.addSubview(tableView)
+        view.addSubview(indicatorView)
     }
     
     func setConstraints() {
@@ -51,10 +57,30 @@ private extension WeatherHomeViewController {
         tableView.autoSetLeftSpace(space: 0)
         tableView.autoSetTopSpace(space: 0)
         tableView.autoSetBottomSpace(space: 0)
+        
+        indicatorView.autoSetRightSpace(space: 0)
+        indicatorView.autoSetLeftSpace(space: 0)
+        indicatorView.autoSetTopSpace(space: 0)
+        indicatorView.autoSetBottomSpace(space: 0)
     }
     
     func registerCell() {
         tableView.register(WeatherHomeCell.self, forCellReuseIdentifier: WeatherHomeCell.reuseIdentifier)
+    }
+    
+    func bindView() {
+        viewModel.cellViewModels.bind { [weak self] _ in
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
+            }
+        }
+           
+        viewModel.isLoading.bind{ [weak self] isLoading in
+            DispatchQueue.main.async { [weak self] in
+                isLoading ? self?.indicatorView.startAnimating() : self?.indicatorView.stopAnimating()
+            }
+               
+        }
     }
 }
 
@@ -66,5 +92,12 @@ private extension WeatherHomeViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         return tableView
+    }
+    
+    func createIndicatorView() -> UIActivityIndicatorView {
+        let indicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        return indicator
     }
 }
