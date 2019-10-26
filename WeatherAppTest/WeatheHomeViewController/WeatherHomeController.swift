@@ -21,7 +21,7 @@ class WeatherHomeController: NSObject, WeatherHomeHandler {
             sleep(3)
             switch result {
             case .success(let weatherList):  self?.viewModel.cellViewModels.value = weatherList.dateList.map {
-                WeatherHomeCellViewModel( title: "\($0.key)")
+                WeatherHomeCellViewModel( title: "\($0.key)", cellPressed: {print("toto")})
             }
             case .failure(_): self?.viewModel.cellViewModels.value = []
             }

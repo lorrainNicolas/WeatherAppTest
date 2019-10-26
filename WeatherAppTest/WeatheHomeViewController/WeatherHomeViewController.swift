@@ -45,6 +45,13 @@ extension WeatherHomeViewController: UITableViewDataSource {
     }
 }
 
+// MARK: -  UITableViewDataSource
+extension WeatherHomeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.cellViewModels.value[indexPath.row].cellPressed?()
+    }
+}
+
 // MARK: -  Build view
 private extension WeatherHomeViewController {
     func buildViewHierarchy() {
@@ -86,6 +93,7 @@ private extension WeatherHomeViewController {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
+        tableView.delegate = self
         return tableView
     }
     

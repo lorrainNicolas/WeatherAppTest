@@ -9,4 +9,5 @@
 import Foundation
 struct  WeatherHomeCellViewModel {
     let title: String
+    let cellPressed: (() -> Void)?
 }
