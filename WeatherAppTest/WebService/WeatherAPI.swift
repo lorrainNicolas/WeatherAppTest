@@ -8,9 +8,9 @@
 
 import Foundation
 class WeatherAPI {
-    
-    static func getWeather(completionHandler: @escaping (Result<WSDateList>) -> Void) {
-        let query: [String: String] = [Constants.llKey: Constants.defaultLocalisation,
+ 
+    static func getWeather(longitude: Double, latitude: Double, completionHandler: @escaping (Result<WSDateList>) -> Void) {
+        let query: [String: String] = [Constants.llKey: "\(latitude),\(longitude)",
                                        Constants.authKey: Constants.apiKey]
         
         WebServicesManager.request(url: Constants.url, query: query) { result in

@@ -52,6 +52,7 @@ extension LocationManager: CLLocationManagerDelegate {
         completionHandler?(.success(location))
         completionHandler = nil
     }
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {}
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -59,7 +60,7 @@ extension LocationManager: CLLocationManagerDelegate {
             return
         }
         wasNotDetermined = false
-        if status == .denied, status == .restricted {
+        if status == .denied || status == .restricted {
             completionHandler?(.failure(LocationManagerError.permissionDenied))
             completionHandler = nil
         } else {

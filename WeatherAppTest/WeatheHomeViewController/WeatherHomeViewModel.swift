@@ -10,6 +10,7 @@ import Foundation
 
 class WeatherHomeViewModel {
     let isLoading = Observable<Bool>(false)
+    let informationHeader = Observable<String>("Welcome")
     let cellViewModels = Observable<[WeatherHomeCellViewModel]>([])
 }
 

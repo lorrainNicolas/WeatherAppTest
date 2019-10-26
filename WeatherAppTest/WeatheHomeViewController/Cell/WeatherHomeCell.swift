@@ -40,8 +40,6 @@ private extension WeatherHomeCell {
         label.autoSetLeftSpace(space: 0)
         label.autoSetTopSpace(space: 0)
         label.autoSetBottomSpace(space: 0)
-       
-        label.autoSetHeight(height: Constants.heightCell)
     }
 }
 
@@ -51,11 +49,5 @@ private extension WeatherHomeCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
-    }
-}
-
-private extension WeatherHomeCell {
-    enum Constants {
-        static let heightCell: CGFloat = 50
     }
 }

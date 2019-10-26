@@ -11,6 +11,8 @@ import UIKit
 class WeatherHomeViewController: UIViewController {
     private lazy var tableView = createTableView()
     private lazy var indicatorView = createIndicatorView()
+    private lazy var informationHeader = createInformationHeaderLabel()
+    private lazy var contentenView = createContentView()
     
     private let controller: WeatherHomeHandler
     private var viewModel: WeatherHomeViewModel {
@@ -52,6 +54,10 @@ extension WeatherHomeViewController: UITableViewDataSource {
         cell.update(vm: viewModel.cellViewModels.value[indexPath.row])
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50;
+    }
 }
 
 // MARK: -  UITableViewDataSource
@@ -64,14 +70,28 @@ extension WeatherHomeViewController: UITableViewDelegate {
 // MARK: -  Build view
 private extension WeatherHomeViewController {
     func buildViewHierarchy() {
-        view.addSubview(tableView)
-        view.addSubview(indicatorView)
+        
+        view.addSubview(contentenView)
+        contentenView.addSubview(informationHeader)
+        contentenView.addSubview(tableView)
+        contentenView.addSubview(indicatorView)
     }
     
     func setConstraints() {
+        let guide = self.view.safeAreaLayoutGuide
+        contentenView.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
+        contentenView.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
+        contentenView.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
+        contentenView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
+  
+        informationHeader.autoSetRightSpace(space: 0)
+        informationHeader.autoSetLeftSpace(space: 0)
+        informationHeader.autoSetTopSpace(space: 0)
+        informationHeader.autoSetHeight(height: 50)
+        
         tableView.autoSetRightSpace(space: 0)
         tableView.autoSetLeftSpace(space: 0)
-        tableView.autoSetTopSpace(space: 0)
+        tableView.autoSetTopSpace(space: 0, withView: informationHeader)
         tableView.autoSetBottomSpace(space: 0)
         
         indicatorView.autoSetRightSpace(space: 0)
@@ -92,15 +112,36 @@ private extension WeatherHomeViewController {
         viewModel.isLoading.dispatchOnMainThread().bind{ [weak self] in
             $0 ? self?.indicatorView.startAnimating() : self?.indicatorView.stopAnimating()
         }
+        
+        viewModel.informationHeader.dispatchOnMainThread().bindAndFire{ [weak self] in
+            self?.informationHeader.text = $0
+        }
+        
+    
     }
 }
 
 // MARK: - Create views
 private extension WeatherHomeViewController {
-
+    func createContentView() -> UIView {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }
+    
+    func createInformationHeaderLabel() -> UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.layer.borderWidth = 1
+        return label
+    }
+    
     func createTableView() -> UITableView {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
         return tableView
