@@ -12,6 +12,9 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        WeatherAPI.getWeather() {
+            print($0)
+        }
         // Do any additional setup after loading the view.
     }
 

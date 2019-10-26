@@ -16,6 +16,10 @@
 		A7D84C3523641F8E00F6111C /* WeatherAppTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C3423641F8E00F6111C /* WeatherAppTestTests.swift */; };
 		A7D84C4023641F8E00F6111C /* WeatherAppTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C3F23641F8E00F6111C /* WeatherAppTestUITests.swift */; };
 		A7D84C4F236422B200F6111C /* WebServicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C4E236422B200F6111C /* WebServicesManager.swift */; };
+		A7D84C512364233F00F6111C /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C502364233F00F6111C /* WeatherAPI.swift */; };
+		A7D84C54236423B800F6111C /* WSDateList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C53236423B800F6111C /* WSDateList.swift */; };
+		A7D84C56236423E100F6111C /* WSWeatherDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C55236423E100F6111C /* WSWeatherDate.swift */; };
+		A7D84C592364245C00F6111C /* DateFormatter+Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C582364245C00F6111C /* DateFormatter+Weather.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +55,10 @@
 		A7D84C3F23641F8E00F6111C /* WeatherAppTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAppTestUITests.swift; sourceTree = "<group>"; };
 		A7D84C4123641F8E00F6111C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7D84C4E236422B200F6111C /* WebServicesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServicesManager.swift; sourceTree = "<group>"; };
+		A7D84C502364233F00F6111C /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
+		A7D84C53236423B800F6111C /* WSDateList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSDateList.swift; sourceTree = "<group>"; };
+		A7D84C55236423E100F6111C /* WSWeatherDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSWeatherDate.swift; sourceTree = "<group>"; };
+		A7D84C582364245C00F6111C /* DateFormatter+Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Weather.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +109,8 @@
 		A7D84C1C23641F8A00F6111C /* WeatherAppTest */ = {
 			isa = PBXGroup;
 			children = (
+				A7D84C572364243400F6111C /* Extensions */,
+				A7D84C522364238C00F6111C /* ViewModel */,
 				A7D84C4D236421F700F6111C /* WebService */,
 				A7D84C1D23641F8A00F6111C /* AppDelegate.swift */,
 				A7D84C1F23641F8A00F6111C /* SceneDelegate.swift */,
@@ -135,8 +145,26 @@
 			isa = PBXGroup;
 			children = (
 				A7D84C4E236422B200F6111C /* WebServicesManager.swift */,
+				A7D84C502364233F00F6111C /* WeatherAPI.swift */,
 			);
 			path = WebService;
+			sourceTree = "<group>";
+		};
+		A7D84C522364238C00F6111C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A7D84C53236423B800F6111C /* WSDateList.swift */,
+				A7D84C55236423E100F6111C /* WSWeatherDate.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A7D84C572364243400F6111C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A7D84C582364245C00F6111C /* DateFormatter+Weather.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -272,8 +300,12 @@
 			files = (
 				A7D84C4F236422B200F6111C /* WebServicesManager.swift in Sources */,
 				A7D84C2223641F8A00F6111C /* ViewController.swift in Sources */,
+				A7D84C512364233F00F6111C /* WeatherAPI.swift in Sources */,
+				A7D84C592364245C00F6111C /* DateFormatter+Weather.swift in Sources */,
+				A7D84C54236423B800F6111C /* WSDateList.swift in Sources */,
 				A7D84C1E23641F8A00F6111C /* AppDelegate.swift in Sources */,
 				A7D84C2023641F8A00F6111C /* SceneDelegate.swift in Sources */,
+				A7D84C56236423E100F6111C /* WSWeatherDate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
