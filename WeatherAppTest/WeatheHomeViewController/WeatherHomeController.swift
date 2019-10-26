@@ -18,10 +18,18 @@ protocol WeatherHomeCoordinatorDelegate: class {
 
 class WeatherHomeController: NSObject, WeatherHomeHandler {
     let viewModel = WeatherHomeViewModel()
+    let locationManage = LocationManager()
     weak var delegate: WeatherHomeCoordinatorDelegate?
     
     func launch() {
         viewModel.isLoading.value = true
+        locationManage.getCurentLocation(completionHandler: { result in
+            switch result {
+            case .success(let location): break;
+            case .failure(_): break;
+            }
+        })
+        
         WeatherAPI.getWeather() { [weak self] result in
             sleep(3)
             switch result {

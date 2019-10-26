@@ -30,6 +30,8 @@
 		A7D84C6E23643F2B00F6111C /* WeatherHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C6D23643F2B00F6111C /* WeatherHomeViewModel.swift */; };
 		A7D84C712364480300F6111C /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C702364480300F6111C /* AppCoordinator.swift */; };
 		A7D84C742364498100F6111C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C732364498100F6111C /* DetailViewController.swift */; };
+		A7D84C77236454E500F6111C /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C76236454E500F6111C /* LocationManager.swift */; };
+		A7D84C7A236455A500F6111C /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C79236455A500F6111C /* Result.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +81,8 @@
 		A7D84C6D23643F2B00F6111C /* WeatherHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherHomeViewModel.swift; sourceTree = "<group>"; };
 		A7D84C702364480300F6111C /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		A7D84C732364498100F6111C /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		A7D84C76236454E500F6111C /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		A7D84C79236455A500F6111C /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +133,8 @@
 		A7D84C1C23641F8A00F6111C /* WeatherAppTest */ = {
 			isa = PBXGroup;
 			children = (
+				A7D84C782364559700F6111C /* Enum */,
+				A7D84C75236454CA00F6111C /* LocationManager */,
 				A7D84C722364495500F6111C /* DetailViewController */,
 				A7D84C6F236447DE00F6111C /* Coordinator */,
 				A7D84C6623643B3200F6111C /* Protocol */,
@@ -243,6 +249,22 @@
 				A7D84C732364498100F6111C /* DetailViewController.swift */,
 			);
 			path = DetailViewController;
+			sourceTree = "<group>";
+		};
+		A7D84C75236454CA00F6111C /* LocationManager */ = {
+			isa = PBXGroup;
+			children = (
+				A7D84C76236454E500F6111C /* LocationManager.swift */,
+			);
+			path = LocationManager;
+			sourceTree = "<group>";
+		};
+		A7D84C782364559700F6111C /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				A7D84C79236455A500F6111C /* Result.swift */,
+			);
+			path = Enum;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -382,6 +404,7 @@
 				A7D84C6C23643E5500F6111C /* WeatherHomeController.swift in Sources */,
 				A7D84C512364233F00F6111C /* WeatherAPI.swift in Sources */,
 				A7D84C592364245C00F6111C /* DateFormatter+Weather.swift in Sources */,
+				A7D84C7A236455A500F6111C /* Result.swift in Sources */,
 				A7D84C5C23642B1E00F6111C /* Logger.swift in Sources */,
 				A7D84C5F2364384C00F6111C /* UIView+AutoLayout.swift in Sources */,
 				A7D84C6823643B4C00F6111C /* Reusable.swift in Sources */,
@@ -393,6 +416,7 @@
 				A7D84C6A23643DEE00F6111C /* Observable.swift in Sources */,
 				A7D84C62236439CA00F6111C /* WeatherHomeCell.swift in Sources */,
 				A7D84C2023641F8A00F6111C /* SceneDelegate.swift in Sources */,
+				A7D84C77236454E500F6111C /* LocationManager.swift in Sources */,
 				A7D84C56236423E100F6111C /* WSWeatherDate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

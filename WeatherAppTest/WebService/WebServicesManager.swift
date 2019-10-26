@@ -10,11 +10,6 @@ import Foundation
 
 public typealias JSONObject = [String: Any]
 
-enum Result<T> {
-    case success(T)
-    case failure(Error)
-}
-
 enum APIError: Error {
     case invalidURL
     case invalidParameter

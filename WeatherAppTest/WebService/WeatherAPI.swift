@@ -9,7 +9,7 @@
 import Foundation
 class WeatherAPI {
     
-    static func getWeather(completionHandler: @escaping (Result<WSDateList>) -> Void ) {
+    static func getWeather(completionHandler: @escaping (Result<WSDateList>) -> Void) {
         let query: [String: String] = [Constants.llKey: Constants.defaultLocalisation,
                                        Constants.authKey: Constants.apiKey]
         
