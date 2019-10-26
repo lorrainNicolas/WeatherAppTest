@@ -12,9 +12,18 @@ class WeatherHomeViewController: UIViewController {
     private lazy var tableView = createTableView()
     private lazy var indicatorView = createIndicatorView()
     
-    private let controller: WeatherHomeHandler = WeatherHomeController()
+    private let controller: WeatherHomeHandler
     private var viewModel: WeatherHomeViewModel {
         return controller.viewModel
+    }
+    
+    init(_ controller: WeatherHomeHandler = WeatherHomeController()) {
+        self.controller = controller
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {

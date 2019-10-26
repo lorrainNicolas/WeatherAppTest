@@ -12,8 +12,13 @@ protocol WeatherHomeHandler {
     func launch()
 }
 
+protocol WeatherHomeCoordinatorDelegate: class {
+    func launchDetailVC()
+}
+
 class WeatherHomeController: NSObject, WeatherHomeHandler {
     let viewModel = WeatherHomeViewModel()
+    weak var delegate: WeatherHomeCoordinatorDelegate?
     
     func launch() {
         viewModel.isLoading.value = true
@@ -21,7 +26,9 @@ class WeatherHomeController: NSObject, WeatherHomeHandler {
             sleep(3)
             switch result {
             case .success(let weatherList):  self?.viewModel.cellViewModels.value = weatherList.dateList.map {
-                WeatherHomeCellViewModel( title: "\($0.key)", cellPressed: {print("toto")})
+                WeatherHomeCellViewModel( title: "\($0.key)", cellPressed: { [weak self] in
+                    self?.delegate?.launchDetailVC()
+                })
             }
             case .failure(_): self?.viewModel.cellViewModels.value = []
             }
