@@ -27,6 +27,7 @@ class WeatherAPI {
                 completionHandler(.success(WSDateList(dateList: weatherDateList)))
                 
             case .failure(let error):
+                Log.error(error)
                 completionHandler(.failure(error))
             }
         }
