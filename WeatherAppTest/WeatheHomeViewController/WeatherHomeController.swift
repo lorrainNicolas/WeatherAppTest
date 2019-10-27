@@ -84,10 +84,7 @@ private extension WeatherHomeController {
     func generateWeatherHomeCellViewModelList(from list: WSDateList) -> [WeatherHomeCellViewModel] {
         var groupDateListByDay = [Date: [WSWeatherDate]]()
         list.dateList.forEach {
-            if groupDateListByDay[$0.key.getDay()] == nil {
-                groupDateListByDay[$0.key.getDay()] = [WSWeatherDate]()
-            }
-            groupDateListByDay[$0.key.getDay()]?.append($0.value)
+            groupDateListByDay[$0.key.getDay(), default:[WSWeatherDate]()].append($0.value)
         }
 
         return groupDateListByDay.compactMap {
