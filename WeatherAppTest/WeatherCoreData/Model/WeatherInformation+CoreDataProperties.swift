@@ -17,6 +17,6 @@ extension WeatherInformation {
         return NSFetchRequest<WeatherInformation>(entityName: "WeatherInformation")
     }
 
-    @NSManaged public var date: Date?
-    @NSManaged public var toto: NSNumber?
+    @NSManaged public var date: Date
+    @NSManaged public var pluie: NSNumber
 }

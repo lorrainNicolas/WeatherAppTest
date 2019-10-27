@@ -8,6 +8,12 @@
 
 import Foundation
 struct  WeatherHomeCellViewModel {
-    let title: String
+    let date: Date
     let cellPressed: (() -> Void)?
+}
+
+extension WeatherHomeCellViewModel {
+    var title: String {
+        return "\(date)"
+    }
 }

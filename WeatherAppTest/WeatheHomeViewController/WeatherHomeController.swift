@@ -25,6 +25,7 @@ class WeatherHomeController: NSObject, WeatherHomeHandler {
     weak var delegate: WeatherHomeCoordinatorDelegate?
     
     func launch() {
+        self.viewModel.isLoading.value = true
         getLocation()
     }
 }
@@ -47,14 +48,16 @@ private extension WeatherHomeController {
     func getWeather(longitude: Double, latitude: Double) {
         
         self.viewModel.informationHeader.value = "fetch Data"
+        sleep(3)
         WeatherAPI.getWeather(longitude:longitude, latitude: latitude) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let weatherList):
-                self.viewModel.cellViewModels.value = weatherList.dateList.map { self.createViewModel(date: $0.key) }
+                self.viewModel.cellViewModels.value = self.generateWeatherHomeCellViewModels(from: weatherList)
                 WeatherInformation.deleteAll()
-                WeatherInformation.insertNewObject(from: weatherList)
+                WeatherInformation.insertNewObjects(from: weatherList)
                 self.viewModel.informationHeader.value = "Welcome from WS \(weatherList.dateList.count) element"
+                self.viewModel.isLoading.value = false
             case .failure(_):
                 self.fetchWeather()
             }
@@ -65,13 +68,14 @@ private extension WeatherHomeController {
         WeatherInformation.fetchAll() {  [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(let weatherInformationList):
-                self.viewModel.cellViewModels.value = weatherInformationList.map{self.createViewModel(date: $0.date!) }
-                 self.viewModel.informationHeader.value = "Welcome from core Data \(weatherInformationList.count) element"
+            case .success(let weatherList):
+                self.viewModel.cellViewModels.value = self.generateWeatherHomeCellViewModels(from: weatherList)
+                self.viewModel.informationHeader.value = "Welcome from core Data \(weatherList.dateList.count) element"
             case .failure(_):
                 self.viewModel.cellViewModels.value = []
                 self.viewModel.informationHeader.value = "cannot get your data"
             }
+            self.viewModel.isLoading.value = false
         }
     }
     
@@ -79,9 +83,14 @@ private extension WeatherHomeController {
 
 // MARK: Helpers
 private extension WeatherHomeController {
-    func createViewModel(date: Date) -> WeatherHomeCellViewModel {
-        return WeatherHomeCellViewModel( title: "\(date)", cellPressed: { [weak self] in
-            self?.delegate?.launchDetailVC()
-        })
+    func generateWeatherHomeCellViewModels(from list: WSDateList) -> [WeatherHomeCellViewModel] {
+        let viewModelList = list.dateList.map {
+            WeatherHomeCellViewModel( date: ($0.key), cellPressed: { [weak self] in
+                self?.delegate?.launchDetailVC()
+            })
+        }.sorted {
+            $0.date.compare($1.date) == .orderedAscending
+        }
+        return viewModelList
     }
 }

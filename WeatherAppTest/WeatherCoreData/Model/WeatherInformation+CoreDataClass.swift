@@ -13,15 +13,16 @@ import CoreData
 @objc(WeatherInformation)
 public class WeatherInformation: NSManagedObject {
     
-    class func fetchAll(completionHandler: @escaping (Result<[WeatherInformation]>) -> Void){
+    class func fetchAll(completionHandler: @escaping (Result<WSDateList>) -> Void){
         let context = CoreDataStack.shared.managedContext
-        let fetchRequest: NSFetchRequest<WeatherInformation>  = WeatherInformation.fetchRequest()
+        let fetchRequest: NSFetchRequest<WeatherInformation> = WeatherInformation.fetchRequest()
         context.perform {
             do {
                 let data = try context.fetch(fetchRequest)
-                completionHandler(.success(data))
+                completionHandler(.success(self.map(data)))
             } catch let error {
-                completionHandler(.failure(error))            }
+                completionHandler(.failure(error))
+            }
         }
     }
     
@@ -40,15 +41,27 @@ public class WeatherInformation: NSManagedObject {
         }
     }
     
-    class func insertNewObject(from vm: WSDateList) {
+    class func insertNewObjects(from vm: WSDateList) {
         let context = CoreDataStack.shared.managedContext
         context.perform {
             vm.dateList.forEach {
                 let newObject =  WeatherInformation(context: context)
                 newObject.date = $0.key
+                newObject.pluie = $0.value.pluie as NSNumber
             }
             CoreDataStack.shared.saveContext()
         }
     }
 }
 
+private extension WeatherInformation {
+    class func map(_ data: [WeatherInformation]) -> WSDateList {
+        var dateList = [Date: WSWeatherDate]()
+        data.forEach {
+            let weatherDate = WSWeatherDate(pluie: $0.pluie.doubleValue)
+            dateList[$0.date] = weatherDate
+        }
+        
+        return WSDateList(dateList: dateList)
+    }
+}
