@@ -46,17 +46,15 @@ private extension WeatherHomeController {
     }
     
     func getWeather(longitude: Double, latitude: Double) {
-        
         self.viewModel.informationHeader.value = "fetch Data"
         sleep(3)
         WeatherAPI.getWeather(longitude:longitude, latitude: latitude) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let weatherList):
-                self.viewModel.cellViewModels.value = self.generateWeatherHomeCellViewModels(from: weatherList)
-                WeatherInformation.deleteAll()
-                WeatherInformation.insertNewObjects(from: weatherList)
-                self.viewModel.informationHeader.value = "Welcome from WS \(weatherList.dateList.count) element"
+                self.viewModel.cellViewModels.value = self.generateWeatherHomeCellViewModelList(from: weatherList)
+                self.persistData(weatherList: weatherList)
+                self.viewModel.informationHeader.value = "Welcome : from WS"
                 self.viewModel.isLoading.value = false
             case .failure(_):
                 self.fetchWeather()
@@ -69,8 +67,8 @@ private extension WeatherHomeController {
             guard let self = self else { return }
             switch result {
             case .success(let weatherList):
-                self.viewModel.cellViewModels.value = self.generateWeatherHomeCellViewModels(from: weatherList)
-                self.viewModel.informationHeader.value = "Welcome from core Data \(weatherList.dateList.count) element"
+                self.viewModel.cellViewModels.value = self.generateWeatherHomeCellViewModelList(from: weatherList)
+                self.viewModel.informationHeader.value = "Welcome : from core Data"
             case .failure(_):
                 self.viewModel.cellViewModels.value = []
                 self.viewModel.informationHeader.value = "cannot get your data"
@@ -83,14 +81,27 @@ private extension WeatherHomeController {
 
 // MARK: Helpers
 private extension WeatherHomeController {
-    func generateWeatherHomeCellViewModels(from list: WSDateList) -> [WeatherHomeCellViewModel] {
-        let viewModelList = list.dateList.map {
-            WeatherHomeCellViewModel( date: ($0.key), cellPressed: { [weak self] in
-                self?.delegate?.launchDetailVC()
-            })
+    func generateWeatherHomeCellViewModelList(from list: WSDateList) -> [WeatherHomeCellViewModel] {
+        var groupDateListByDay = [Date: [WSWeatherDate]]()
+        list.dateList.forEach {
+            if groupDateListByDay[$0.key.getDay()] == nil {
+                groupDateListByDay[$0.key.getDay()] = [WSWeatherDate]()
+            }
+            groupDateListByDay[$0.key.getDay()]?.append($0.value)
+        }
+
+        return groupDateListByDay.compactMap {
+            guard let first = $0.value.first else { return nil }
+            return WeatherHomeCellViewModel( date: ($0.key),
+                                      tempeature: first.temperature._2m.kelvinToCelsius,
+                                      cellPressed: { [weak self] in self?.delegate?.launchDetailVC() })
         }.sorted {
             $0.date.compare($1.date) == .orderedAscending
         }
-        return viewModelList
+    }
+    
+    func persistData(weatherList: WSDateList) {
+        WeatherInformation.deleteAll()
+        WeatherInformation.insertNewObjects(from: weatherList)
     }
 }

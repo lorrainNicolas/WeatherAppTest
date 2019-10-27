@@ -8,5 +8,12 @@
 
 import Foundation
 struct WSWeatherDate: Codable {
-    let pluie: Double
+    let rain: Double
+    let temperature: WSTemperature
+    
+    enum CodingKeys: String, CodingKey {
+        case rain = "pluie"
+        case temperature = "temperature"
+    }
 }
+

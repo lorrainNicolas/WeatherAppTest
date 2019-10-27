@@ -47,7 +47,8 @@ public class WeatherInformation: NSManagedObject {
             vm.dateList.forEach {
                 let newObject =  WeatherInformation(context: context)
                 newObject.date = $0.key
-                newObject.pluie = $0.value.pluie as NSNumber
+                newObject.rain = $0.value.rain as NSNumber
+                newObject.temperature = $0.value.temperature._2m  as NSNumber
             }
             CoreDataStack.shared.saveContext()
         }
@@ -58,7 +59,8 @@ private extension WeatherInformation {
     class func map(_ data: [WeatherInformation]) -> WSDateList {
         var dateList = [Date: WSWeatherDate]()
         data.forEach {
-            let weatherDate = WSWeatherDate(pluie: $0.pluie.doubleValue)
+            let temperature = WSTemperature(_2m: $0.temperature.doubleValue)
+            let weatherDate = WSWeatherDate(rain: $0.rain.doubleValue, temperature: temperature)
             dateList[$0.date] = weatherDate
         }
         

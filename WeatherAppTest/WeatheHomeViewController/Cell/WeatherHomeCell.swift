@@ -10,8 +10,8 @@ import UIKit
 
 class WeatherHomeCell: UITableViewCell {
     
-    private lazy var label = createLabel()
-    
+    private lazy var dateLabel = createDateLabel()
+    private lazy var temperatureLabel = createTemperatureLabel()
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .green
@@ -25,27 +25,40 @@ class WeatherHomeCell: UITableViewCell {
     }
     
     func update( vm: WeatherHomeCellViewModel) {
-        label.text = vm.title
+        dateLabel.text = vm.dateString
+        temperatureLabel.text = vm.tempeatureString
+        
     }
 }
 
 // MARK: -  Build view
 private extension WeatherHomeCell {
     func buildViewHierarchy() {
-        contentView.addSubview(label)
+        contentView.addSubview(dateLabel)
+        contentView.addSubview(temperatureLabel)
     }
     
     func setConstraints() {
-        label.autoSetRightSpace(space: 0)
-        label.autoSetLeftSpace(space: 0)
-        label.autoSetTopSpace(space: 0)
-        label.autoSetBottomSpace(space: 0)
+        dateLabel.autoSetRightSpace(space: 0, withView: temperatureLabel)
+        dateLabel.autoSetLeftSpace(space: 10)
+        dateLabel.autoSetTopSpace(space: 0)
+        dateLabel.autoSetBottomSpace(space: 0)
+        
+        temperatureLabel.autoSetRightSpace(space: 10)
+        temperatureLabel.autoSetTopSpace(space: 0)
+        temperatureLabel.autoSetBottomSpace(space: 0)
     }
 }
 
 // MARK: - Create views
 private extension WeatherHomeCell {
-    func createLabel() -> UILabel {
+    func createDateLabel() -> UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }
+    
+    func createTemperatureLabel() -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

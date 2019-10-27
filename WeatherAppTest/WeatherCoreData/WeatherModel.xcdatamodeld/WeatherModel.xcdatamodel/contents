@@ -2,9 +2,10 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14903" systemVersion="18G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="WeatherInformation" representedClassName="WeatherInformation" syncable="YES">
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="pluie" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="rain" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="temperature" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="WeatherInformation" positionX="-63" positionY="-18" width="128" height="73"/>
+        <element name="WeatherInformation" positionX="-63" positionY="-18" width="128" height="88"/>
     </elements>
 </model>

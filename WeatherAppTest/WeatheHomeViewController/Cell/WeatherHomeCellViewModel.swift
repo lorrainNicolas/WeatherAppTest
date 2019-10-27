@@ -9,11 +9,16 @@
 import Foundation
 struct  WeatherHomeCellViewModel {
     let date: Date
+    let tempeature: Double
     let cellPressed: (() -> Void)?
 }
 
 extension WeatherHomeCellViewModel {
-    var title: String {
-        return "\(date)"
+    var dateString: String {
+        return DateFormatter.dayFormatter.string(from: date)
+    }
+    
+    var tempeatureString: String {
+        return "\(tempeature)°"
     }
 }

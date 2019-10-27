@@ -18,5 +18,6 @@ extension WeatherInformation {
     }
 
     @NSManaged public var date: Date
-    @NSManaged public var pluie: NSNumber
+    @NSManaged public var rain: NSNumber
+    @NSManaged public var temperature: NSNumber
 }

@@ -32,13 +32,10 @@ class WeatherAPI {
             }
         }
     }
-    
-    
 }
 
 private extension WeatherAPI {
     enum Constants {
-        static let defaultLocalisation = "48.85341,2.3488"
         static let llKey = "_ll"
         static let authKey = "_auth"
         static let url = "http://www.infoclimat.fr/public-api/gfs/json"
