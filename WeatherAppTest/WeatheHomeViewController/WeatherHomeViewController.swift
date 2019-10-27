@@ -12,7 +12,7 @@ class WeatherHomeViewController: UIViewController {
     private lazy var tableView = createTableView()
     private lazy var indicatorView = createIndicatorView()
     private lazy var informationHeader = createInformationHeaderLabel()
-    private lazy var contentenView = createContentView()
+    private lazy var contentView = createContentView()
     
     private let controller: WeatherHomeHandler
     private var viewModel: WeatherHomeViewModel {
@@ -71,18 +71,18 @@ extension WeatherHomeViewController: UITableViewDelegate {
 private extension WeatherHomeViewController {
     func buildViewHierarchy() {
         
-        view.addSubview(contentenView)
-        contentenView.addSubview(informationHeader)
-        contentenView.addSubview(tableView)
-        contentenView.addSubview(indicatorView)
+        view.addSubview(contentView)
+        contentView.addSubview(informationHeader)
+        contentView.addSubview(tableView)
+        contentView.addSubview(indicatorView)
     }
     
     func setConstraints() {
         let guide = self.view.safeAreaLayoutGuide
-        contentenView.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
-        contentenView.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
-        contentenView.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
-        contentenView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
+        contentView.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
+        contentView.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
   
         informationHeader.autoSetRightSpace(space: 0)
         informationHeader.autoSetLeftSpace(space: 0)

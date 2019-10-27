@@ -78,6 +78,19 @@ extension UIView {
         return constraint
     }
     
+    @discardableResult
+    func autoSetWidth(width: CGFloat) -> NSLayoutConstraint? {
+        let constraint = NSLayoutConstraint(item: self,
+                                            attribute: .width,
+                                            relatedBy: .equal,
+                                            toItem: nil,
+                                            attribute: .notAnAttribute,
+                                            multiplier: 1,
+                                            constant: width)
+        setConstraint(constraint: constraint, toView: self)
+        return constraint
+    }
+    
 }
 
 private extension UIView {

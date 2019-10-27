@@ -47,6 +47,7 @@ private extension WeatherHomeCell {
         temperatureLabel.autoSetRightSpace(space: 10)
         temperatureLabel.autoSetTopSpace(space: 0)
         temperatureLabel.autoSetBottomSpace(space: 0)
+        temperatureLabel.autoSetWidth(width: 50)
     }
 }
 

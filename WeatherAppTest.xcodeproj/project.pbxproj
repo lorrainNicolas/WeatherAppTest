@@ -13,6 +13,8 @@
 		A73DC71223648551003655C8 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73DC71123648551003655C8 /* CoreDataStack.swift */; };
 		A73DC7142365A303003655C8 /* WSTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73DC7132365A303003655C8 /* WSTemperature.swift */; };
 		A73DC7162365A394003655C8 /* Double+Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73DC7152365A394003655C8 /* Double+Weather.swift */; };
+		A73DC7182365B619003655C8 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73DC7172365B619003655C8 /* DetailCell.swift */; };
+		A73DC71A2365B681003655C8 /* DetailCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73DC7192365B681003655C8 /* DetailCellViewModel.swift */; };
 		A7D84C1E23641F8A00F6111C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C1D23641F8A00F6111C /* AppDelegate.swift */; };
 		A7D84C2023641F8A00F6111C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C1F23641F8A00F6111C /* SceneDelegate.swift */; };
 		A7D84C2223641F8A00F6111C /* WeatherHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D84C2123641F8A00F6111C /* WeatherHomeViewController.swift */; };
@@ -64,6 +66,8 @@
 		A73DC71123648551003655C8 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		A73DC7132365A303003655C8 /* WSTemperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSTemperature.swift; sourceTree = "<group>"; };
 		A73DC7152365A394003655C8 /* Double+Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Weather.swift"; sourceTree = "<group>"; };
+		A73DC7172365B619003655C8 /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
+		A73DC7192365B681003655C8 /* DetailCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCellViewModel.swift; sourceTree = "<group>"; };
 		A7D84C1A23641F8A00F6111C /* WeatherAppTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherAppTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D84C1D23641F8A00F6111C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7D84C1F23641F8A00F6111C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -139,6 +143,15 @@
 				A73DC6C5236484AB003655C8 /* WeatherInformation+CoreDataProperties.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		A73DC71B2365B686003655C8 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				A73DC7172365B619003655C8 /* DetailCell.swift */,
+				A73DC7192365B681003655C8 /* DetailCellViewModel.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		A7D84C1123641F8A00F6111C = {
@@ -280,6 +293,7 @@
 		A7D84C722364495500F6111C /* DetailViewController */ = {
 			isa = PBXGroup;
 			children = (
+				A73DC71B2365B686003655C8 /* Cell */,
 				A7D84C732364498100F6111C /* DetailViewController.swift */,
 			);
 			path = DetailViewController;
@@ -443,6 +457,7 @@
 				A7D84C7A236455A500F6111C /* Result.swift in Sources */,
 				A73DC7142365A303003655C8 /* WSTemperature.swift in Sources */,
 				A7D84C5C23642B1E00F6111C /* Logger.swift in Sources */,
+				A73DC7182365B619003655C8 /* DetailCell.swift in Sources */,
 				A7D84C5F2364384C00F6111C /* UIView+AutoLayout.swift in Sources */,
 				A7D84C6823643B4C00F6111C /* Reusable.swift in Sources */,
 				A7D84C742364498100F6111C /* DetailViewController.swift in Sources */,
@@ -454,6 +469,7 @@
 				A7D84C6A23643DEE00F6111C /* Observable.swift in Sources */,
 				A7D84C62236439CA00F6111C /* WeatherHomeCell.swift in Sources */,
 				A7D84C2023641F8A00F6111C /* SceneDelegate.swift in Sources */,
+				A73DC71A2365B681003655C8 /* DetailCellViewModel.swift in Sources */,
 				A73DC6C7236484AB003655C8 /* WeatherInformation+CoreDataProperties.swift in Sources */,
 				A73DC7162365A394003655C8 /* Double+Weather.swift in Sources */,
 				A7D84C77236454E500F6111C /* LocationManager.swift in Sources */,
