@@ -13,7 +13,11 @@ enum LocationManagerError: Error {
     case permissionDenied
 }
 
-class LocationManager: NSObject {
+protocol LocationManagerHandler{
+    func getCurentLocation(completionHandler: @escaping (Result<CLLocation>) -> Void)
+}
+
+class LocationManager: NSObject, LocationManagerHandler {
     private let locationManager = CLLocationManager()
     private var wasNotDetermined: Bool = false
     private var completionHandler: ((Result<CLLocation>) -> Void)?
@@ -56,9 +60,7 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {}
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        guard wasNotDetermined, status != .notDetermined else {
-            return
-        }
+        guard wasNotDetermined, status != .notDetermined else { return }
         wasNotDetermined = false
         if status == .denied || status == .restricted {
             completionHandler?(.failure(LocationManagerError.permissionDenied))

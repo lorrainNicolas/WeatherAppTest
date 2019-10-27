@@ -20,8 +20,18 @@ protocol WeatherHomeCoordinatorDelegate: class {
 
 class WeatherHomeController: NSObject, WeatherHomeHandler {
     let viewModel = WeatherHomeViewModel()
-    let locationManage = LocationManager()
+    let locationManager: LocationManagerHandler
+    let weatherApi: WeatherAPIHandler
+    let coreDataManager: CoreDataManagerHandler
     
+    init(locationManager: LocationManagerHandler = LocationManager(),
+         weatherApi: WeatherAPIHandler = WeatherAPI(),
+         coreDataManager: CoreDataManagerHandler = CoreDataManager()) {
+        self.locationManager = locationManager
+        self.weatherApi = weatherApi
+        self.coreDataManager = coreDataManager
+        super.init()
+    }
     weak var delegate: WeatherHomeCoordinatorDelegate?
     
     func launch() {
@@ -33,7 +43,7 @@ class WeatherHomeController: NSObject, WeatherHomeHandler {
 // MARK: Helpers: Get Method
 private extension WeatherHomeController {
     func getLocation() {
-        locationManage.getCurentLocation() { [weak self] result in
+        locationManager.getCurentLocation() { [weak self] result in
             self?.viewModel.informationHeader.value = "getting your position"
             switch result {
             case .success(let location):
@@ -48,7 +58,7 @@ private extension WeatherHomeController {
     func getWeather(longitude: Double, latitude: Double) {
         self.viewModel.informationHeader.value = "fetch Data"
         sleep(3)
-        WeatherAPI.getWeather(longitude:longitude, latitude: latitude) { [weak self] result in
+        weatherApi.getWeather(longitude:longitude, latitude: latitude) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let weatherList):
@@ -63,7 +73,7 @@ private extension WeatherHomeController {
     }
     
     func fetchWeather() {
-        WeatherInformation.fetchAll() {  [weak self] result in
+        coreDataManager.fetchAll() {  [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let weatherList):
@@ -106,8 +116,8 @@ private extension WeatherHomeController {
     }
     
     func persistData(weatherList: WSDateList) {
-        WeatherInformation.deleteAll()
-        WeatherInformation.insertNewObjects(from: weatherList)
+        coreDataManager.deleteAll()
+        coreDataManager.insertNewObjects(from: weatherList)
     }
     
     func cellPressed(with date: Date, from list: WSDateList) ->  (() -> Void) {

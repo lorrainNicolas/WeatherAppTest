@@ -7,13 +7,18 @@
 //
 
 import Foundation
-class WeatherAPI {
- 
-    static func getWeather(longitude: Double, latitude: Double, completionHandler: @escaping (Result<WSDateList>) -> Void) {
+protocol WeatherAPIHandler {
+    func getWeather(longitude: Double, latitude: Double, completionHandler: @escaping (Result<WSDateList>) -> Void)
+}
+
+class WeatherAPI: WeatherAPIHandler {
+    func getWeather(longitude: Double, latitude: Double, completionHandler: @escaping (Result<WSDateList>) -> Void) {
         let query: [String: String] = [Constants.llKey: "\(latitude),\(longitude)",
                                        Constants.authKey: Constants.apiKey]
         
         WebServicesManager.request(url: Constants.url, query: query) { result in
+         //   completionHandler(.failure(APIError.invalidURL))
+                //               return
             switch result {
             case .success(let json):
                 var weatherDateList = [Date: WSWeatherDate]()

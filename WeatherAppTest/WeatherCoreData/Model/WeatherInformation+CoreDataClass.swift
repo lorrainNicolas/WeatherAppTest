@@ -28,7 +28,7 @@ public class WeatherInformation: NSManagedObject {
     
     class func deleteAll() {
         let context = CoreDataStack.shared.managedContext
-        let fetchRequest: NSFetchRequest<WeatherInformation>  = WeatherInformation.fetchRequest()
+        let fetchRequest: NSFetchRequest<WeatherInformation> = WeatherInformation.fetchRequest()
         context.perform {
             do {
                 let data = try context.fetch(fetchRequest)
@@ -45,7 +45,7 @@ public class WeatherInformation: NSManagedObject {
         let context = CoreDataStack.shared.managedContext
         context.perform {
             vm.dateList.forEach {
-                let newObject =  WeatherInformation(context: context)
+                let newObject = WeatherInformation(context: context)
                 newObject.date = $0.key
                 newObject.rain = $0.value.rain as NSNumber
                 newObject.temperature = $0.value.temperature._2m as NSNumber
