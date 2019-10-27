@@ -21,10 +21,16 @@ extension DateFormatter {
         formatter.dateFormat = "EEEE, MMM d, yyyy"
         return formatter
     }
+    
+    static var hourFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss"
+        return formatter
+    }
 }
 
 extension Date {
-    func getDay() -> Date {
+    func currentDay() -> Date {
         let calendar = Calendar.current
         let dateComponents = calendar.dateComponents([.year, .month, .day], from: self)
         return calendar.date(from: dateComponents) ?? Date()

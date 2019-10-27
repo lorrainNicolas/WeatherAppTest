@@ -15,7 +15,7 @@ protocol WeatherHomeHandler {
 }
 
 protocol WeatherHomeCoordinatorDelegate: class {
-    func launchDetailVC()
+    func launchDetailVC(with viewModels: [DetailCellViewModel])
 }
 
 class WeatherHomeController: NSObject, WeatherHomeHandler {
@@ -52,7 +52,7 @@ private extension WeatherHomeController {
             guard let self = self else { return }
             switch result {
             case .success(let weatherList):
-                self.viewModel.cellViewModels.value = self.generateWeatherHomeCellViewModelList(from: weatherList)
+                self.viewModel.cellViewModels.value = self.generateDailyCellViewModels(from: weatherList)
                 self.persistData(weatherList: weatherList)
                 self.viewModel.informationHeader.value = "Welcome : from WS"
                 self.viewModel.isLoading.value = false
@@ -67,7 +67,7 @@ private extension WeatherHomeController {
             guard let self = self else { return }
             switch result {
             case .success(let weatherList):
-                self.viewModel.cellViewModels.value = self.generateWeatherHomeCellViewModelList(from: weatherList)
+                self.viewModel.cellViewModels.value = self.generateDailyCellViewModels(from: weatherList)
                 self.viewModel.informationHeader.value = "Welcome : from core Data"
             case .failure(_):
                 self.viewModel.cellViewModels.value = []
@@ -81,24 +81,43 @@ private extension WeatherHomeController {
 
 // MARK: Helpers
 private extension WeatherHomeController {
-    func generateWeatherHomeCellViewModelList(from list: WSDateList) -> [WeatherHomeCellViewModel] {
+    func generateDailyCellViewModels(from list: WSDateList) -> [DailyCellViewModel] {
         var groupDateListByDay = [Date: [WSWeatherDate]]()
         list.dateList.forEach {
-            groupDateListByDay[$0.key.getDay(), default:[WSWeatherDate]()].append($0.value)
+            groupDateListByDay[$0.key.currentDay(), default:[WSWeatherDate]()].append($0.value)
         }
 
         return groupDateListByDay.compactMap {
-            guard let first = $0.value.first else { return nil }
-            return WeatherHomeCellViewModel( date: ($0.key),
-                                      tempeature: first.temperature._2m.kelvinToCelsius,
-                                      cellPressed: { [weak self] in self?.delegate?.launchDetailVC() })
-        }.sorted {
-            $0.date.compare($1.date) == .orderedAscending
-        }
+            let currentDate = $0.key
+            guard let temperature = getFirstTemperature(of: currentDate, from: list) else { return nil }
+            return DailyCellViewModel(date: currentDate,
+                                      tempeature: temperature.kelvinToCelsius,
+                                      cellPressed: cellPressed(with: currentDate, from: list))
+        }.sorted {$0.date.compare($1.date) == .orderedAscending}
+    }
+    
+    func generateDetailCellViewModels(with date: Date, from list: WSDateList) -> [DetailCellViewModel] {
+        return list.dateList.filter { Calendar.current.isDate($0.key, inSameDayAs: date) }
+            .map { DetailCellViewModel(date: $0.key,
+                                       tempeature: $0.value.temperature._2m.kelvinToCelsius,
+                                       rain: $0.value.rain,
+                                       wind: $0.value.wind._10m) }
+            .sorted { $0.date.compare($1.date) == .orderedAscending }
     }
     
     func persistData(weatherList: WSDateList) {
         WeatherInformation.deleteAll()
         WeatherInformation.insertNewObjects(from: weatherList)
+    }
+    
+    func cellPressed(with date: Date, from list: WSDateList) ->  (() -> Void) {
+        return {
+            self.delegate?.launchDetailVC(with:self.generateDetailCellViewModels(with: date, from: list))
+        }
+    }
+    
+    func getFirstTemperature(of day: Date, from list: WSDateList) -> Double? {
+        return list.dateList.sorted {  $0.key.compare($1.key) == .orderedAscending }
+            .first(where: { Calendar.current.isDate($0.key, inSameDayAs: day) })?.value.temperature._2m
     }
 }

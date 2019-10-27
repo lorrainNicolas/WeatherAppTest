@@ -30,11 +30,11 @@ class WeatherHomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         buildViewHierarchy()
         setConstraints()
         registerCell()
         bindView()
-        
         controller.launch()
     }
 }
@@ -46,7 +46,7 @@ extension WeatherHomeViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: WeatherHomeCell.reuseIdentifier, for: indexPath) as? WeatherHomeCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: DailyCell.reuseIdentifier, for: indexPath) as? DailyCell else {
             Log.warning("OUPS !!")
             return UITableViewCell()
         }
@@ -101,7 +101,7 @@ private extension WeatherHomeViewController {
     }
     
     func registerCell() {
-        tableView.register(WeatherHomeCell.self, forCellReuseIdentifier: WeatherHomeCell.reuseIdentifier)
+        tableView.register(DailyCell.self, forCellReuseIdentifier: DailyCell.reuseIdentifier)
     }
     
     func bindView() {
@@ -124,7 +124,6 @@ private extension WeatherHomeViewController {
     func createContentView() -> UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
         return view
     }
     

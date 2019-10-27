@@ -1,5 +1,5 @@
 //
-//  WeatherHomeCell.swift
+//  DailyCell.swift
 //  WeatherAppTest
 //
 //  Created by Nicolas Lorrain on 26/10/2019.
@@ -8,14 +8,14 @@
 
 import UIKit
 
-class WeatherHomeCell: UITableViewCell {
+class DailyCell: UITableViewCell {
     
     private lazy var dateLabel = createDateLabel()
     private lazy var temperatureLabel = createTemperatureLabel()
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .green
         selectionStyle = .none
+        accessoryType = .disclosureIndicator
         buildViewHierarchy()
         setConstraints()
     }
@@ -24,15 +24,14 @@ class WeatherHomeCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update( vm: WeatherHomeCellViewModel) {
+    func update( vm: DailyCellViewModel) {
         dateLabel.text = vm.dateString
         temperatureLabel.text = vm.tempeatureString
-        
     }
 }
 
 // MARK: -  Build view
-private extension WeatherHomeCell {
+private extension DailyCell {
     func buildViewHierarchy() {
         contentView.addSubview(dateLabel)
         contentView.addSubview(temperatureLabel)
@@ -52,7 +51,7 @@ private extension WeatherHomeCell {
 }
 
 // MARK: - Create views
-private extension WeatherHomeCell {
+private extension DailyCell {
     func createDateLabel() -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false

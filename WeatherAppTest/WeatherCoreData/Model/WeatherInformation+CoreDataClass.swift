@@ -48,7 +48,8 @@ public class WeatherInformation: NSManagedObject {
                 let newObject =  WeatherInformation(context: context)
                 newObject.date = $0.key
                 newObject.rain = $0.value.rain as NSNumber
-                newObject.temperature = $0.value.temperature._2m  as NSNumber
+                newObject.temperature = $0.value.temperature._2m as NSNumber
+                newObject.wind = $0.value.wind._10m as NSNumber
             }
             CoreDataStack.shared.saveContext()
         }
@@ -60,7 +61,8 @@ private extension WeatherInformation {
         var dateList = [Date: WSWeatherDate]()
         data.forEach {
             let temperature = WSTemperature(_2m: $0.temperature.doubleValue)
-            let weatherDate = WSWeatherDate(rain: $0.rain.doubleValue, temperature: temperature)
+            let wind = WSWind(_10m: $0.wind.doubleValue)
+            let weatherDate = WSWeatherDate(rain: $0.rain.doubleValue, temperature: temperature,wind: wind)
             dateList[$0.date] = weatherDate
         }
         

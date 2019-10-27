@@ -10,10 +10,12 @@ import Foundation
 struct WSWeatherDate: Codable {
     let rain: Double
     let temperature: WSTemperature
+    let wind: WSWind
     
     enum CodingKeys: String, CodingKey {
         case rain = "pluie"
         case temperature = "temperature"
+        case wind = "vent_moyen"
     }
 }
 

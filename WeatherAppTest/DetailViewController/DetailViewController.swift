@@ -12,9 +12,12 @@ class DetailViewController: UIViewController {
     private lazy var contentView = createContentView()
     private lazy var tableView = createTableView()
     
-    init() {
+    private let viewModels: [DetailCellViewModel]
+    
+    init(with viewModels: [DetailCellViewModel]) {
+        self.viewModels = viewModels
         super.init(nibName: nil, bundle: nil)
-        self.view.backgroundColor = .red
+        self.view.backgroundColor = .white
     }
     
     required init?(coder: NSCoder) {
@@ -24,19 +27,24 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         buildViewHierarchy()
         setConstraints()
+        registerCell() 
     }
 }
 
 extension DetailViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return viewModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       return  UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailCell.reuseIdentifier, for: indexPath) as? DetailCell else {
+            Log.warning("OUPS !!")
+            return UITableViewCell()
+        }
+        
+        cell.update(vm: viewModels[indexPath.row])
+        return cell
     }
-    
-    
 }
 
 private extension DetailViewController {
@@ -59,9 +67,8 @@ private extension DetailViewController {
     }
     
     func registerCell() {
-       // tableView.register(WeatherHomeCell.self, forCellReuseIdentifier: WeatherHomeCell.reuseIdentifier)
+        tableView.register(DetailCell.self, forCellReuseIdentifier: DetailCell.reuseIdentifier)
     }
-    
 }
 
 
@@ -70,7 +77,6 @@ private extension DetailViewController {
     func createContentView() -> UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
         return view
     }
 

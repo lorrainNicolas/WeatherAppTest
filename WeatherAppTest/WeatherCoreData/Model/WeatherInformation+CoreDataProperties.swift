@@ -20,4 +20,5 @@ extension WeatherInformation {
     @NSManaged public var date: Date
     @NSManaged public var rain: NSNumber
     @NSManaged public var temperature: NSNumber
+    @NSManaged public var wind: NSNumber
 }

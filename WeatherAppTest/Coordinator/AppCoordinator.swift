@@ -28,8 +28,8 @@ class AppCoordinator {
 }
 
 extension AppCoordinator: WeatherHomeCoordinatorDelegate {
-    func launchDetailVC() {
-        let vc = DetailViewController()
+    func launchDetailVC(with viewModels: [DetailCellViewModel]) {
+        let vc = DetailViewController(with: viewModels)
         navController?.pushViewController(vc, animated: true)
     }
 }

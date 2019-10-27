@@ -1,5 +1,5 @@
 //
-//  WeatherHomeCellViewModel.swift
+//  DailyCellViewModel.swift
 //  WeatherAppTest
 //
 //  Created by Nicolas Lorrain on 26/10/2019.
@@ -7,13 +7,13 @@
 //
 
 import Foundation
-struct  WeatherHomeCellViewModel {
+struct  DailyCellViewModel {
     let date: Date
     let tempeature: Double
     let cellPressed: (() -> Void)?
 }
 
-extension WeatherHomeCellViewModel {
+extension DailyCellViewModel {
     var dateString: String {
         return DateFormatter.dayFormatter.string(from: date)
     }
