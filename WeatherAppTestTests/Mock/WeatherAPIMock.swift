@@ -17,6 +17,4 @@ class WeatherAPIMock: WeatherAPIHandler {
     func getWeather(longitude: Double, latitude: Double, completionHandler: @escaping (Result<WSDateList>) -> Void) {
         completionHandler(result)
     }
-    
-    
 }

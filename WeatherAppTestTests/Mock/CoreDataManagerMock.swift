@@ -26,6 +26,4 @@ class CoreDataManagerMock: CoreDataManagerHandler {
     func deleteAll() { }
     
     func insertNewObjects(from vm: WSDateList) { }
-    
-    
 }
