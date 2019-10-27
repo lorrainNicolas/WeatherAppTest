@@ -20,9 +20,11 @@ protocol WeatherHomeCoordinatorDelegate: class {
 
 class WeatherHomeController: NSObject, WeatherHomeHandler {
     let viewModel = WeatherHomeViewModel()
-    let locationManager: LocationManagerHandler
-    let weatherApi: WeatherAPIHandler
-    let coreDataManager: CoreDataManagerHandler
+    weak var delegate: WeatherHomeCoordinatorDelegate?
+    
+    private let locationManager: LocationManagerHandler
+    private let weatherApi: WeatherAPIHandler
+    private let coreDataManager: CoreDataManagerHandler
     
     init(locationManager: LocationManagerHandler = LocationManager(),
          weatherApi: WeatherAPIHandler = WeatherAPI(),
@@ -32,7 +34,6 @@ class WeatherHomeController: NSObject, WeatherHomeHandler {
         self.coreDataManager = coreDataManager
         super.init()
     }
-    weak var delegate: WeatherHomeCoordinatorDelegate?
     
     func launch() {
         self.viewModel.isLoading.value = true
@@ -47,7 +48,7 @@ private extension WeatherHomeController {
             self?.viewModel.informationHeader.value = "getting your position"
             switch result {
             case .success(let location):
-                self?.getWeather(longitude: location.coordinate.longitude, latitude: location.coordinate.latitude)
+                self?.getWeatherFromWS(longitude: location.coordinate.longitude, latitude: location.coordinate.latitude)
             case .failure(_):
                 self?.viewModel.informationHeader.value = "error: cannot get your position"
                 self?.viewModel.isLoading.value = false
@@ -55,7 +56,7 @@ private extension WeatherHomeController {
         }
     }
     
-    func getWeather(longitude: Double, latitude: Double) {
+    func getWeatherFromWS(longitude: Double, latitude: Double) {
         self.viewModel.informationHeader.value = "fetch Data"
         sleep(3)
         weatherApi.getWeather(longitude:longitude, latitude: latitude) { [weak self] result in
@@ -67,12 +68,12 @@ private extension WeatherHomeController {
                 self.viewModel.informationHeader.value = "Welcome : from WS"
                 self.viewModel.isLoading.value = false
             case .failure(_):
-                self.fetchWeather()
+                self.fetchWeatherFromCoreData()
             }
         }
     }
     
-    func fetchWeather() {
+    func fetchWeatherFromCoreData() {
         coreDataManager.fetchAll() {  [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -115,11 +116,6 @@ private extension WeatherHomeController {
             .sorted { $0.date.compare($1.date) == .orderedAscending }
     }
     
-    func persistData(weatherList: WSDateList) {
-        coreDataManager.deleteAll()
-        coreDataManager.insertNewObjects(from: weatherList)
-    }
-    
     func cellPressed(with date: Date, from list: WSDateList) ->  (() -> Void) {
         return {
             self.delegate?.launchDetailVC(with:self.generateDetailCellViewModels(with: date, from: list))
@@ -130,4 +126,10 @@ private extension WeatherHomeController {
         return list.dateList.sorted {  $0.key.compare($1.key) == .orderedAscending }
             .first(where: { Calendar.current.isDate($0.key, inSameDayAs: day) })?.value.temperature._2m
     }
+    
+    func persistData(weatherList: WSDateList) {
+        coreDataManager.deleteAll()
+        coreDataManager.insertNewObjects(from: weatherList)
+    }
+
 }

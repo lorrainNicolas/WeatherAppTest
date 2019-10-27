@@ -49,8 +49,9 @@ class WeatherHomeControllerTest: XCTestCase {
     func testFetchWitLocationAndWithDataFromWS() {
         //Given
         let locationManager = LocationManagerMock(.success(CLLocation()))
+        let date = Date()
         var dico = [Date : WSWeatherDate]()
-        dico[Date()] = WSWeatherDate(rain: 1, temperature: WSTemperature(_2m: 1), wind: WSWind(_10m: 12))
+        dico[date] = WSWeatherDate(rain: 1, temperature: WSTemperature(_2m: 1), wind: WSWind(_10m: 12))
         
         let apiWeather = WeatherAPIMock(.success(WSDateList(dateList: dico)))
         let coreDataManager = CoreDataManagerMock(.success(WSDateList(dateList: [Date : WSWeatherDate]())))
@@ -65,6 +66,8 @@ class WeatherHomeControllerTest: XCTestCase {
         XCTAssert( controller.viewModel.cellViewModels.value.count == 1)
         XCTAssert( controller.viewModel.numberOfRow == 1)
         XCTAssert( controller.viewModel.isLoading.value == false)
+        XCTAssert( controller.viewModel.cellViewModels.value[0].date == date)
+        XCTAssert( controller.viewModel.cellViewModels.value[0].tempeature == 1)
     }
     
     func testFetchWitLocationAndFailedFromWSAndHasCoreData() {

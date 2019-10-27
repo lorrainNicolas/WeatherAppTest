@@ -27,17 +27,17 @@ class WeatherAppTestUITests: XCTestCase {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
-
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testLaunchPerformance() {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTOSSignpostMetric.applicationLaunch]) {
-                XCUIApplication().launch()
-            }
-        }
+        
+        let _ = Pages.homePage
+                    .clickOnFirstCell()
+                    .clickOnBack()
+                    .clickOnCell(row: 1)
+                    .clickOnBack()
+                    .clickOnCell(row: 2)
+                    .clickOnBack()
+                    .clickOnCell(row: 3)
+                    .clickOnBack()
+                    .clickOnCell(row: 4)
+        
     }
 }

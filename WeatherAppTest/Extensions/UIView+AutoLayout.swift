@@ -11,7 +11,6 @@ import UIKit
 // extension use for a private project
 
 extension UIView {
-
     
     @discardableResult
     func autoSetTopSpace(space: CGFloat, withView view: UIView? = nil) -> NSLayoutConstraint? {

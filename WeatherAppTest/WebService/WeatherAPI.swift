@@ -17,8 +17,6 @@ class WeatherAPI: WeatherAPIHandler {
                                        Constants.authKey: Constants.apiKey]
         
         WebServicesManager.request(url: Constants.url, query: query) { result in
-         //   completionHandler(.failure(APIError.invalidURL))
-                //               return
             switch result {
             case .success(let json):
                 var weatherDateList = [Date: WSWeatherDate]()
