@@ -48,7 +48,7 @@ extension WeatherHomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WeatherHomeCell.reuseIdentifier, for: indexPath) as? WeatherHomeCell else {
             Log.warning("OUPS !!")
-            return WeatherHomeCell()
+            return UITableViewCell()
         }
         
         cell.update(vm: viewModel.cellViewModels.value[indexPath.row])
@@ -116,8 +116,6 @@ private extension WeatherHomeViewController {
         viewModel.informationHeader.dispatchOnMainThread().bindAndFire{ [weak self] in
             self?.informationHeader.text = $0
         }
-        
-    
     }
 }
 

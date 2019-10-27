@@ -24,85 +24,64 @@ class WeatherHomeController: NSObject, WeatherHomeHandler {
     
     weak var delegate: WeatherHomeCoordinatorDelegate?
     
-    // TODO: IMPROVE THIS
     func launch() {
-        deleteAll()
-        fetch()
-        save()
-        viewModel.isLoading.value = true
-        locationManage.getCurentLocation(completionHandler: { [weak self] result in
+        getLocation()
+    }
+}
+
+// MARK: Helpers: Get Method
+private extension WeatherHomeController {
+    func getLocation() {
+        locationManage.getCurentLocation() { [weak self] result in
             self?.viewModel.informationHeader.value = "getting your position"
-            
             switch result {
             case .success(let location):
-                
-                self?.viewModel.informationHeader.value = "fetch Data"
-                WeatherAPI.getWeather(longitude: location.coordinate.longitude, latitude: location.coordinate.latitude) { [weak self] result in
-                    sleep(3)
-                    switch result {
-                    case .success(let weatherList):
-                        self?.viewModel.cellViewModels.value = weatherList.dateList.map {
-                        WeatherHomeCellViewModel( title: "\($0.key)", cellPressed: { [weak self] in
-                            self?.delegate?.launchDetailVC()
-                        })
-                        }
-                        self?.viewModel.informationHeader.value = "Welcome"
-                    case .failure(_):
-                        self?.viewModel.cellViewModels.value = []
-                        self?.viewModel.informationHeader.value = "error: cannot get your data"
-                        
-                    }
-                    self?.viewModel.isLoading.value = false
-                }
-                
+                self?.getWeather(longitude: location.coordinate.longitude, latitude: location.coordinate.latitude)
             case .failure(_):
                 self?.viewModel.informationHeader.value = "error: cannot get your position"
                 self?.viewModel.isLoading.value = false
             }
-        })
+        }
     }
+    
+    func getWeather(longitude: Double, latitude: Double) {
+        
+        self.viewModel.informationHeader.value = "fetch Data"
+        WeatherAPI.getWeather(longitude:longitude, latitude: latitude) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let weatherList):
+                self.viewModel.cellViewModels.value = weatherList.dateList.map { self.createViewModel(date: $0.key) }
+                WeatherInformation.deleteAll()
+                WeatherInformation.insertNewObject(from: weatherList)
+                self.viewModel.informationHeader.value = "Welcome from WS \(weatherList.dateList.count) element"
+            case .failure(_):
+                self.fetchWeather()
+            }
+        }
+    }
+    
+    func fetchWeather() {
+        WeatherInformation.fetchAll() {  [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let weatherInformationList):
+                self.viewModel.cellViewModels.value = weatherInformationList.map{self.createViewModel(date: $0.date!) }
+                 self.viewModel.informationHeader.value = "Welcome from core Data \(weatherInformationList.count) element"
+            case .failure(_):
+                self.viewModel.cellViewModels.value = []
+                self.viewModel.informationHeader.value = "cannot get your data"
+            }
+        }
+    }
+    
 }
 
-extension WeatherHomeController {
-    func fetch() {
-        let context = CoreDataStack.shared.managedContext
-        let fetchRequest: NSFetchRequest<WeatherInformation>  = WeatherInformation.fetchRequest()
-        context.perform {
-           
-            do {
-                let data = try context.fetch(fetchRequest)
-            } catch let error {
-                Log.error("cannot save \(error)")
-            }
-        }
+// MARK: Helpers
+private extension WeatherHomeController {
+    func createViewModel(date: Date) -> WeatherHomeCellViewModel {
+        return WeatherHomeCellViewModel( title: "\(date)", cellPressed: { [weak self] in
+            self?.delegate?.launchDetailVC()
+        })
     }
-    
-    func deleteAll() {
-        let context = CoreDataStack.shared.managedContext
-        let fetchRequest: NSFetchRequest<WeatherInformation> = WeatherInformation.fetchRequest()
-        context.perform {
-            do {
-                let data = try context.fetch(fetchRequest)
-                data.forEach{ context.delete($0) }
-                CoreDataStack.shared.saveContext()
-            } catch let error {
-                Log.error("cannot save \(error)")
-            }
-        }
-    }
-    
-    func save() {
-       let context = CoreDataStack.shared.managedContext
-        context.perform { [weak self] in
-            for i in 0 ..< 100 {
-                let info = WeatherInformation(context: context)
-                var date = Date()
-                date.addTimeInterval(TimeInterval(i * 100))
-                info.date = date
-                info.toto = i as NSNumber
-            }
-            CoreDataStack.shared.saveContext()
-        }
-    }
-    
 }
