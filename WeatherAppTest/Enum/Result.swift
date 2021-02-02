@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+// delete
 enum Result<T> {
     case success(T)
     case failure(Error)
